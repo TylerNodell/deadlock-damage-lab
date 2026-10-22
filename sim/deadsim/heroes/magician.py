@@ -101,4 +101,5 @@ class AudienceParticipation(AbilityImpl):
         if f.can_cast() and cp.impl.kind != "passive" and cp.impl.should_cast(cp.ctx):
             cp.cast()
             return
+        cp.scratch.pop("_reach_delay", None)   # same as try_cast: a gate that passed inside a failed condition leaves no wait
         c.after(0.1, self.try_copy, c, cp, until)
