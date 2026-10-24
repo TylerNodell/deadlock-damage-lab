@@ -51,7 +51,7 @@
             <select id="a-aim">
               <option value="p25">25th pct ranked</option>
               <option value="p50">Median ranked</option>
-              <option value="p75" selected>75th pct ranked (Phantom+, standard)</option>
+              <option value="p75" selected>75th pct ranked (Phantom+)</option>
               <option value="p90">90th pct ranked</option>
               <option value="custom">My own numbers</option>
             </select></label>
@@ -114,6 +114,7 @@
         <label class="check"><input id="d-immortal" type="checkbox" checked> Refill HP instead of dying, so damage keeps counting for 30 s</label>
         <label class="check"><input id="d-walk" type="checkbox" checked> Walk out of Alchemical Fire after 2 s, unless stunned, rooted or slowed (slows keep it in for their share)</label>
         <button class="run" id="run" disabled>Run damage test</button>
+        <p class="hint">The result updates by itself whenever you change the build or the target.</p>
         <p class="hint" id="share-note" hidden>Loaded from a shared link. The test runs as soon as the sim is ready.</p>
         <p class="err" id="err" hidden></p>
       </div>
@@ -137,6 +138,7 @@
       </div>
       <p class="fine" id="used"></p>
     </div>
+    <button class="resbar" id="resbar" type="button" hidden><span class="l">15 s damage</span> <b id="resbar-v"></b> <span id="resbar-d"></span> <span class="go">See result ↓</span></button>
   </section>
 
   <!-- Build maker (maker.js) -->

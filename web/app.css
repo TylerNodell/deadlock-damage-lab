@@ -136,6 +136,21 @@ input[type=number] { font-family: var(--mono); font-variant-numeric: tabular-num
 .mk .v { font: 600 1.9rem/1.1 var(--head); font-variant-numeric: tabular-nums; }
 .mk .s { font: .78rem var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 .mk.eff .v { color: var(--accent); }
+.mk .dl { font: 600 .74rem var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.mk .dl.up { color: var(--good); } .mk .dl.down { color: var(--bad); }
+/* result summary pinned to the bottom while the result is scrolled out of view */
+.resbar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 20;
+  display: flex; align-items: baseline; gap: 10px; max-width: calc(100vw - 24px); padding: 10px 16px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--panel); color: var(--fg); box-shadow: 0 6px 24px rgb(0 0 0 / .18); cursor: pointer; font: inherit; white-space: nowrap; }
+.resbar[hidden] { display: none; }
+.resbar .l { font: 600 .72rem var(--head); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.resbar b { font: 600 1.2rem var(--head); font-variant-numeric: tabular-nums; }
+.resbar #resbar-d .dl { font: 600 .74rem var(--mono); } .resbar .up { color: var(--good); } .resbar .down { color: var(--bad); }
+.resbar #resbar-d .dl { overflow: hidden; text-overflow: ellipsis; }
+.resbar .go { color: var(--accent); font: 600 .78rem var(--head); text-transform: uppercase; letter-spacing: .06em; }
+#tab-test { padding-bottom: 56px; }
+.full-note { color: var(--bad); }
+.results.stale .marks, .results.stale .charts, .results.stale #res-build { opacity: .4; }
 
 .charts { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; }
 @media (max-width: 860px) { .charts { grid-template-columns: minmax(0, 1fr); } }

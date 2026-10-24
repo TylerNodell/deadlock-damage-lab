@@ -135,6 +135,32 @@ async function testTab(page, where) {
     const d = await page.evaluate(() => S.last.res.damage["15s"]);
     if (!(d > 0)) throw new Error(`15 s damage is ${d}`);
   });
+  await step(page, where, "edits rerun by themselves", async () => {
+    // an untouched preset build follows a hero change, and the test reruns without pressing Run
+    let n = await runId(page);
+    const abrams = await page.evaluate(() => S.heroes.find((h) => h.name === "Abrams").id);
+    await page.selectOption("#a-hero", String(abrams));
+    await liveResult(page, n);
+    const st = await page.evaluate(() => ({ hero: S.last.req.hero, preset: S.A.preset, items: S.last.req.items.join(".") }));
+    const pop = await page.evaluate(async (h) => (await damageHero(h)).budgets["27000"].popular.items.join("."), abrams);
+    if (st.hero !== abrams || st.preset !== "popular" || st.items !== pop) throw new Error(`hero change kept the old build: ${JSON.stringify(st)}`);
+    n = await runId(page);
+    await page.click("#a-shop .it:not(.owned)");
+    await liveResult(page, n);
+    if (!(await page.$("#marks .dl"))) throw new Error("no change against the last run shown");
+    // the summary bar shows while the result is out of view
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForSelector("#resbar:not([hidden])", { timeout: 5000 });
+    // a bad number shows a plain message instead of running, and clears once fixed
+    await page.fill("#d-hp", "");
+    await page.waitForFunction(() => !$("#err").hidden && /max HP/.test($("#err").textContent), null, { timeout: 5000 });
+    if (!(await page.$("#results.stale"))) throw new Error("old result not dimmed while the input is bad");
+    n = await runId(page);
+    await page.fill("#d-hp", "2700");
+    await liveResult(page, n);
+    if (!(await page.$eval("#err", (e) => e.hidden))) throw new Error("input error still shown after fixing it");
+    if (await page.$("#results.stale")) throw new Error("result still dimmed after fixing the input");
+  });
   await step(page, where, "preset build + enemy hero target", async () => {
     const n = await runId(page);
     await page.click('#presets [data-k="fight_15s"]');
